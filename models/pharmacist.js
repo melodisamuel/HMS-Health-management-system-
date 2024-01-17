@@ -1,10 +1,30 @@
 const mongoose = require('mongoose');
 
 const pharmacistSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, 'Pharmacist must have user'],
+    name: {
+        type: String,
+        required: true,
+    },
+    username: {
+        type: String,
+        unique: true,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String, 
+        required: true,
+        unique: true, 
+    },
+    phoneNumber: {
+        type: String,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     },
 });
 

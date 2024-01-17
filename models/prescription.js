@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const appointmentSchema = new mongoose.Schema({
+const prescriptionSchema = new mongoose.Schema({
     patientId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Patient',
@@ -16,3 +16,7 @@ const appointmentSchema = new mongoose.Schema({
             default: Date.now()
         },
 });
+
+const Prescription = mongoose.model('Prescription', prescriptionSchema);
+
+module.exports = Prescription;

@@ -1,13 +1,43 @@
 const mongoose = require('mongoose');
 
 const doctorSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, 'Doctor must have user'],
-        schedule: {
-            type: String,
-        }
+    firsName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String, 
+        required: true,
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    }, 
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    phoneNumber: {
+        type: String,
+    },
+    speciality: {
+        type: String,
+        required: true,
+    },
+    schedule: [{
+        day: String,
+        startTime: String,
+        endTime: String,
+    }],
+    createdAt: {
+        type: Date,
+        default: Date.now()
     },
 });
 
