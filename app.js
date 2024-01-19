@@ -3,6 +3,8 @@ const morgan = require('morgan');
 
 const AppError = require('./utils/appError')
 const ErrorHandler = require('./controllers/errorController');
+const Endpoints = require('./utils/endpoints')
+const userRouter = require('./routes/userRoutes')
 
 const app = express();
 
@@ -19,6 +21,10 @@ app.use((req, res, next) => {
     next();
 })
 
+// Routes 
+app.use("/api/v1/user", userRouter);
+
+
 
 // Handling unhandled routes 
 app.all('*', (req, res, next) => {
@@ -26,5 +32,6 @@ app.all('*', (req, res, next) => {
 });
 
 app.use(ErrorHandler);
+// app.use(Endpoints)
 
 module.exports = app;
