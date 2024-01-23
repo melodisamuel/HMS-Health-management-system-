@@ -1,3 +1,4 @@
+const { promisify } = require('util')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const catchAsync = require('../utils/catchAsync');
@@ -12,7 +13,7 @@ const signToken = id => {
 exports.register = catchAsync(async (req, res, next) => {
     const newUser = await User.create({
         fullName: req.body.fullName,
-        userName: req.body.userName,
+        username: req.body.username,
         email: req.body.email,
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
@@ -49,9 +50,33 @@ exports.login =  catchAsync(async (req, res, next) => {
  
     // if everything ok, send token 
     const token = signToken(user._id);
-        res.status(200).json({
-            status: 'success',
-            token,
-    })
 
+    res.status(200).json({
+    status: 'success',
+    token,
+    })
 });
+
+exports.protect = catchAsync(async (req, res, next) => {
+    // Get token and check if its there 
+    let token
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+         token = req.headers.authorization.split(' ')[1]
+    }
+
+    if (!token) {
+        return next(new AppError('You are not logged in! please login to get access.', 401))
+    }
+
+    // Verify token 
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+    console.log(decoded);
+
+    // CHECK IF USER STILL EXISTS 
+    const freshUser = await User.findById(decoded.id)
+    if (!freshUser) {
+        next(new AppError('The user belonging to the token n longer exists.', 401))
+    }
+
+    next()
+})
