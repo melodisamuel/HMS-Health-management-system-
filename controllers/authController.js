@@ -17,6 +17,7 @@ exports.register = catchAsync(async (req, res, next) => {
         email: req.body.email,
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
+        passwordChangedAt: req.body.passwordChangedAt,
         dateOfBirth: req.body.dateOfBirth,
         gender: req.body.gender,
         phoneNumber: req.body.phoneNumber
@@ -72,11 +73,16 @@ exports.protect = catchAsync(async (req, res, next) => {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
     console.log(decoded);
 
-    // CHECK IF USER STILL EXISTS 
+    // Check if user still exists
     const freshUser = await User.findById(decoded.id)
     if (!freshUser) {
-        next(new AppError('The user belonging to the token n longer exists.', 401))
+        next(new AppError('The user belonging to the token  longer exists.', 401))
     }
 
+    // Check if user chnaged password after the token was issued 
+    if (freshUser.changedPasswordAfter(decoded.iat)) {
+        return next(new AppError('User recently changed passsword! Please login again.', 401))
+    }
+    // Allow access to protected route
     next()
 })
