@@ -5,11 +5,13 @@ const AppError = require('./utils/appError')
 const ErrorHandler = require('./controllers/errorController');
 const Endpoints = require('./utils/endpoints')
 const userRouter = require('./routes/userRoutes')
+const patientRouter = require('./routes/patientRoutes');
+const doctorRouter = require('./routes/doctorRoutes');
 
 const app = express();
 
 // MIDLLWARES
-if (process.env.NODE_ENV === 'develpment') {
+if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
@@ -24,6 +26,8 @@ app.use((req, res, next) => {
 
 // Routes 
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/patient", patientRouter)
+app.use('/api/v1/doctor', doctorRouter)
 
 
 
