@@ -40,7 +40,8 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["admin", "patient", "receptionist", "doctor", "nurse", "pharmacist"],
+        enum: ["user", "admin", "patient", "receptionist", "doctor", "nurse", "pharmacist"],
+        default: 'user',
     },
     password: {
         type: String,
@@ -82,7 +83,6 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
         const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
 
 
-        console.log(this.passwordChangedAt, JWTTimestamp);
         return JWTTimestamp < changedTimestamp;
     }
 

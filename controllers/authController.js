@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const Doctor = require('../models/doctor')
+
 
 const signToken = id => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -18,6 +20,7 @@ exports.register = catchAsync(async (req, res, next) => {
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
         passwordChangedAt: req.body.passwordChangedAt,
+        role: req.body.role,
         dateOfBirth: req.body.dateOfBirth,
         gender: req.body.gender,
         phoneNumber: req.body.phoneNumber
@@ -58,11 +61,25 @@ exports.login =  catchAsync(async (req, res, next) => {
     })
 });
 
+exports.registerDoctor = catchAsync(async (req, res, next) => {
+    const newDoctor = await Doctor.create(req.body);
+    // if (!patient) {
+    //     return next(new AppError("No patient found with that ID", 404))
+    // }
+    res.status(201).json({
+        status: 'success',
+        data: {
+            newDoctor,
+        }
+    })
+
+});
+
 exports.protect = catchAsync(async (req, res, next) => {
     // Get token and check if its there 
     let token
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-         token = req.headers.authorization.split(' ')[1]
+        token = req.headers.authorization.split(' ')[1]
     }
 
     if (!token) {
@@ -84,5 +101,16 @@ exports.protect = catchAsync(async (req, res, next) => {
         return next(new AppError('User recently changed passsword! Please login again.', 401))
     }
     // Allow access to protected route
+    req.user = freshUser;
     next()
-})
+});
+
+exports.restrictTo = (...roles) => {
+    return (req, res, next) => {
+        // roles ['admin']
+        if (!roles.includes(req.user.role)) {
+            return next(new AppError('You do not have permission to register staff', 403))
+        }
+        next();
+    }
+}

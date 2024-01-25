@@ -39,6 +39,11 @@ const doctorSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    role: {
+        type: String,
+        enum: ["user", "admin", "patient", "receptionist", "doctor", "nurse", "pharmacist"],
+        default: 'user',
+    },
 });
 
 const Doctor = mongoose.model('Doctor', doctorSchema);
