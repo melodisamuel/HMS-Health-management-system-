@@ -128,7 +128,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   
     // 2. Generate the random token
     const resetToken = user.createPasswordResetToken();
-    
+
     await user.save({ validateBeforeSave: false });
   
     // 3. Send it back as an email
@@ -196,3 +196,28 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
           token,
           })
       });
+
+exports.updatePassword = catchAsync(async(req, res, next) => {
+    // Get user from collection 
+    const user = await User.findById(req.user.id).select("+password");
+
+    // Check if posted password is correct
+    if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+        return next(new AppError("Your current password is wrong", 401))
+    }
+
+    // if so, update password
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    await user.save()
+
+    // Log user in, send JWT back to the user
+    const token = signToken(user._id);
+
+    res.status(200).json({
+    status: 'success',
+    token,
+    })
+      })
+
+      
