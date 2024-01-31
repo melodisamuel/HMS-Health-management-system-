@@ -16,7 +16,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         return next (new AppError('This route is not for password updates. Please use /updateMyPassword.', 400))
     }
     // Filtered out unwanted filled names
-    const filteredBody = filterObj(req.body, 'name', 'email');
+    const filteredBody = filterObj(req.body, 'username', 'email');
 
     // Update user document
     const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, { new: true, runValidators: true})

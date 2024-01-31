@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     username: {
         type: String,
-        required: [true, 'UserName is required'],
+        required: [true, 'Username is required'],
         unique: true,
     },
     gender: {
@@ -80,6 +80,14 @@ userSchema.pre('save', async function (next) {
     this.passwordConfirm = undefined;
     next();
 });
+
+// userSchema.pre('save', async function () {
+//     if (req.includes('username', { admin })) return next();
+
+//     this.username = await bcrypt.hash(this.username)
+
+//     next()
+// })
 
 userSchema.pre('save', function (next) {
     if (!this.isModified('password') || this.isNew) return next()

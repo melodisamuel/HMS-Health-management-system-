@@ -2,16 +2,16 @@ const express = require('express')
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-santize')
+// const mongoSanitize = require('express-mongo-santize')
 const xss = require('xss-clean')
 const hpp = require('hpp');
 
 const AppError = require('./utils/appError')
 const ErrorHandler = require('./controllers/errorController');
-const Endpoints = require('./utils/endpoints')
+// const Endpoints = require('./utils/endpoints')
 const userRouter = require('./routes/userRoutes')
 const patientRouter = require('./routes/patientRoutes');
-const doctorRouter = require('./routes/doctorRoutes');
+const registrationRouter = require('./routes/registrationRoutes');
 
 const app = express();
 
@@ -33,7 +33,7 @@ app.use('/api', limiter);
 app.use(express.json({ limit: '10kb' }));
 
 // Data sanitization against NOSQL query injection
-app.use(mongoSanitize());
+// app.use(mongoSanitize());
 
 // Data sanitization XSS
 app.use(xss())
@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 // Routes 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/patient", patientRouter)
-app.use('/api/v1/doctor', doctorRouter)
+app.use('/api/v1/registration', registrationRouter)
 
 
 

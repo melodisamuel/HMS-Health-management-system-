@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const doctorSchema = new mongoose.Schema({
+const registrationSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
@@ -8,6 +8,11 @@ const doctorSchema = new mongoose.Schema({
     lastName: {
         type: String, 
         required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
     },
     username: {
         type: String,
@@ -25,6 +30,7 @@ const doctorSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
+        unique: true,
     },
     speciality: {
         type: String,
@@ -43,9 +49,11 @@ const doctorSchema = new mongoose.Schema({
         type: String,
         enum: ["user", "admin", "patient", "receptionist", "doctor", "nurse", "pharmacist"],
         default: 'user',
+        required: [true, 'Role is required to register new staff']
     },
 });
 
-const Doctor = mongoose.model('Doctor', doctorSchema);
 
-module.exports = Doctor;
+const Registration = mongoose.model('Registration', registrationSchema);
+
+module.exports = Registration;

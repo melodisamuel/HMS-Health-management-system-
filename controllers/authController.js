@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const Doctor = require('../models/doctor')
+const Registration = require('../models/registration')
 const sendEmail = require('../utils/email');
 
 
@@ -39,7 +39,7 @@ const createSendToken = (user, statusCode, res) => {
     });
   };
 
-exports.register = catchAsync(async (req, res, next) => {
+exports.signUp = catchAsync(async (req, res, next) => {
     const newUser = await User.create({
         fullName: req.body.fullName,
         username: req.body.username,
@@ -55,6 +55,7 @@ exports.register = catchAsync(async (req, res, next) => {
     })
     createSendToken(newUser, 201, res);
 });
+
  
 exports.login =  catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
@@ -76,12 +77,12 @@ exports.login =  catchAsync(async (req, res, next) => {
  createSendToken(user, 200, res);
 });
 
-exports.registerDoctor = catchAsync(async (req, res, next) => {
-    const newDoctor = await Doctor.create(req.body);
+exports.register = catchAsync(async (req, res, next) => {
+    const newStaff = await Registration.create(req.body);
     // if (!patient) {
     //     return next(new AppError("No patient found with that ID", 404))
     // }
-    createSendToken(user, 200, res);
+    createSendToken(newStaff, 201, res);
 
 });
 
