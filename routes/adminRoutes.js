@@ -1,0 +1,1 @@
+const adminController = require('../controllers/adminController')

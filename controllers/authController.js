@@ -55,7 +55,6 @@ exports.signUp = catchAsync(async (req, res, next) => {
     })
     createSendToken(newUser, 201, res);
 });
-
  
 exports.login =  catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
@@ -77,8 +76,19 @@ exports.login =  catchAsync(async (req, res, next) => {
  createSendToken(user, 200, res);
 });
 
+
+
+// filteredObj = (obj, ...allowedFields) => {
+//     const newObj = {};
+//     Object.keys(obj).forEach(el => {
+//         if (allowedFields.includes(el)) newObj[el] = obj[el];
+//     })
+//     return newObj
+// }
+
 exports.register = catchAsync(async (req, res, next) => {
-    const newStaff = await Registration.create(req.body);
+    // const filteredBody = filteredObj(req.body, fullName, username, email, gender, phoneNumber, dateOfBirth, password, passwordConfirm)
+    const newStaff = await Registration.create(req.body, filteredBody, { new: true, runValidators: true});
     // if (!patient) {
     //     return next(new AppError("No patient found with that ID", 404))
     // }
@@ -120,7 +130,7 @@ exports.restrictTo = (...roles) => {
     return (req, res, next) => {
         // roles ['admin']
         if (!roles.includes(req.user.role)) {
-            return next(new AppError('You do not have permission to register staff', 403))
+            return next(new AppError('You do not have permission to perform this action', 403))
         }
         next();
     }
@@ -215,6 +225,7 @@ exports.updatePassword = catchAsync(async(req, res, next) => {
 
     // Log user in, send JWT back to the user
     createSendToken(user, 200, res);
+    next()
       })
 
       
