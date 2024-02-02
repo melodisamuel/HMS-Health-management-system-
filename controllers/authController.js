@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const Registration = require('../models/registration')
 const sendEmail = require('../utils/email');
 
 
@@ -86,15 +85,7 @@ exports.login =  catchAsync(async (req, res, next) => {
 //     return newObj
 // }
 
-exports.register = catchAsync(async (req, res, next) => {
-    // const filteredBody = filteredObj(req.body, fullName, username, email, gender, phoneNumber, dateOfBirth, password, passwordConfirm)
-    const newStaff = await Registration.create(req.body, filteredBody, { new: true, runValidators: true});
-    // if (!patient) {
-    //     return next(new AppError("No patient found with that ID", 404))
-    // }
-    createSendToken(newStaff, 201, res);
 
-});
 
 exports.protect = catchAsync(async (req, res, next) => {
     // Get token and check if its there 
