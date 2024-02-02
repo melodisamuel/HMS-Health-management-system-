@@ -1,4 +1,4 @@
-const Admin = require('../models/admin');
+// const Admin = require('../models/admin');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Registration = require('../models/registration')
@@ -25,7 +25,7 @@ const createSendToken = (user, statusCode, res) => {
     if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
   
     res.cookie("jwt", token, cookieOptions);
-  
+
     // Remove password from the output
     user.password = undefined;
   
@@ -39,9 +39,6 @@ const createSendToken = (user, statusCode, res) => {
   };
 
 
-// exports.manageStaffAccounts = (req, res, next) => {
-//     const
-// }
 
 exports.register = catchAsync(async (req, res, next) => {
     // const filteredBody = filteredObj(req.body, fullName, username, email, gender, phoneNumber, dateOfBirth, password, passwordConfirm)
@@ -52,3 +49,15 @@ exports.register = catchAsync(async (req, res, next) => {
     createSendToken(newStaff, 201, res);
 
 });
+
+exports.manageStaffAccounts = catchAsync(async (req, res, next) => {
+    const staffMembers = await Registration.find();
+
+    res.status(200).json({
+        status: 'success',
+        results: staffMembers.length,
+        data: {
+            staffMembers
+        }
+    })
+}) 
