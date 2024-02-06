@@ -26,4 +26,16 @@ exports.updateMedicineStatus = catchAsync(async (req, res, next) => {
                 medicine
             }
         })
+})
+    
+exports.checkAllMedicineStatus = catchAsync(async (req, res, next) => {
+    const medicine = await Medicine.find()
+
+    res.status(200).json({
+        status: "success",
+        results: medicine.length,
+        data: {
+            medicine,
+        }
     })
+})
