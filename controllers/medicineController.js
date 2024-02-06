@@ -39,3 +39,17 @@ exports.checkAllMedicineStatus = catchAsync(async (req, res, next) => {
         }
     })
 })
+
+exports.deleteMedcineStatus = catchAsync(async (req, res, next) => {
+    const medicine = await Medicine.findByIdAndDelete(req.params.id);
+
+    if (!medicine) {
+        return next(new AppError('No medicine found with that ID', 404))
+    }
+
+    res.status(204).json({
+        status: "success",
+        data: null
+    })
+
+})

@@ -10,6 +10,9 @@ router.route('/medicine-status')
 router.route('/update-medicine-status/:id')
     .patch(authController.protect, authController.restrictTo('admin'), medicineController.updateMedicineStatus)
 
-router.route('/check-all-medicine-status').get(authController.protect, authController.restrictTo('admin'), medicineController.checkAllMedicineStatus)
+router.route('/check-all-medicine-status')
+    .get(authController.protect, authController.restrictTo('admin'), medicineController.checkAllMedicineStatus)
+
+router.route('/delete-medicine-status/:id').delete(authController.protect, authController.restrictTo('admin'), medicineController.deleteMedcineStatus);
 
 module.exports = router;
