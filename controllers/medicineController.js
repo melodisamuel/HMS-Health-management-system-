@@ -12,3 +12,18 @@ exports.medicineStatus = catchAsync(async (req, res, next) => {
         }
     })
 })
+
+exports.updateMedicineStatus = catchAsync(async (req, res, next) => {
+    const medicine = await Medicine.findByIdAndUpdate(req.params.id, req.body, { new: true }) 
+
+    if (!medicine) {
+        return next(new AppError('No medicine found with that ID', 404))
+    }
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                medicine
+            }
+        })
+    })
