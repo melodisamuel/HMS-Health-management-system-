@@ -3,6 +3,8 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Registration = require('../models/registration')
 const AllocateResources = require('../models/resourceAllocation')
+const Medicine = require('../models/medicine');
+const Report = require('../models/report')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
 const { promisify } = require('util')
@@ -74,3 +76,18 @@ exports.allocateResources =catchAsync(async (req, res, next) => {
         }
     })
 })
+
+exports.observeMedicineStatus = catchAsync(async (req, res, next) => {
+    const medicine = await Medicine.find({});
+
+    res.status(200).json({
+        status: 'success',
+        message: "Medicine status observed successfully",
+        results: medicine.length,
+        data: {
+            medicine
+        }
+    })
+})
+
+

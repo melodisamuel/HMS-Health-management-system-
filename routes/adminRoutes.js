@@ -9,7 +9,10 @@ router.route('/manage-staff-accounts')
     .get(authController.protect, authController.restrictTo('admin'), adminController.manageStaffAccounts);
 
 router.route('/allocate-resources')
-    .post(authController.protect, authController.restrictTo('admin'), adminController.allocateResources)
+    .post(authController.protect, authController.restrictTo('admin'), adminController.allocateResources);
+
+    router.route('/observe-medicine-status').get(authController.protect, authController.restrictTo('admin'), adminController.observeMedicineStatus)
+
 
 
 module.exports = router;
