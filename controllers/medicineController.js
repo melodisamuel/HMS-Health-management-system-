@@ -1,6 +1,8 @@
 const Medicine = require('../models/medicine');
+const catchAsync = require('../utils/catchAsync')
+const AppError = require('../utils/appError')
 
-const medicineStatus = catchAsync(async (req, res, next) => {
+exports.medicineStatus = catchAsync(async (req, res, next) => {
     const medicine = await Medicine.create(req.body);
 
     res.status(201).json({

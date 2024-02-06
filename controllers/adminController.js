@@ -82,7 +82,6 @@ exports.observeMedicineStatus = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        message: "Medicine status observed successfully",
         results: medicine.length,
         data: {
             medicine
