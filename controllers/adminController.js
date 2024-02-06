@@ -78,11 +78,14 @@ exports.allocateResources =catchAsync(async (req, res, next) => {
 })
 
 exports.observeMedicineStatus = catchAsync(async (req, res, next) => {
-    const medicine = await Medicine.find({});
+    const medicine = await Medicine.findById(req.params.id);
+
+    if (!medicine) {
+        return next(new AppError("No medicine found with that ID", 404))
+    }
 
     res.status(200).json({
-        status: 'success',
-        results: medicine.length,
+        status: "success",
         data: {
             medicine
         }

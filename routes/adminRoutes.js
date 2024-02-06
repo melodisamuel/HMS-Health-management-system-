@@ -11,8 +11,7 @@ router.route('/manage-staff-accounts')
 router.route('/allocate-resources')
     .post(authController.protect, authController.restrictTo('admin'), adminController.allocateResources);
 
-    router.route('/observe-medicine-status').get(authController.protect, authController.restrictTo('admin'), adminController.observeMedicineStatus)
-
+    router.route('/observe-medicine-status/:id').get(authController.protect, authController.restrictTo('admin'), adminController.observeMedicineStatus)
 
 
 module.exports = router;
