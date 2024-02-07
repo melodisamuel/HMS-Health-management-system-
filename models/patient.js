@@ -20,6 +20,7 @@ const patientSchema = new mongoose.Schema({
         },
         PhoneNumber: {
             type: String,
+            unique: true,
         },
     },
     medicalHistory: {
