@@ -1,4 +1,5 @@
 const Patient = require('../models/patient')
+const Prescription = require('../models/prescription');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Appointment = require('../models/appointment');
@@ -31,4 +32,17 @@ exports.bookAppointment = catchAsync(async (req, res, next) => {
         })
     })
 
+exports.viewPrescription = catchAsync(async (req, res, next) => {
+    const presciption = await Prescription.findById(req.params.id);
 
+    if (!Prescription) {
+        return next(new AppError('No prescription found with that ID', 404))
+    }
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            presciption
+        }
+    })
+    })
