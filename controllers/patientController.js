@@ -60,5 +60,6 @@ exports.viewDoctorsList = catchAsync(async (req, res, next) => {
         data: {
             doctors,
         }
-    })
-    })
+    });
+});
+    

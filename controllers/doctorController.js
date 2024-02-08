@@ -1,4 +1,5 @@
 const Prescription = require('../models/prescription');
+const ResultsAndReports = require('../models/reportAndResults')
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -16,13 +17,13 @@ exports.enterPresciption = catchAsync(async (req, res, next) => {
     })
 })
 
-// exports.generateReport = catchAsync(async (req, res, next) => {
-//     const newReport = await Doctor.create(req.body);
+exports.generateResultsAndReports = catchAsync(async (req, res, next) => {
+    const newReportAndResults = await ResultsAndReports.create(req.body);
 
-//     res.status(201).json({
-//         status: 'success',
-//         data: {
-//             doctor: newReport,
-//         }
-//     })
-// })
+    res.status(201).json({
+        status: 'success',
+        data: {
+            doctor: newReportAndResults,
+        }
+    })
+})
