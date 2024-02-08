@@ -9,5 +9,6 @@ router.route('/register-patient').post(authController.protect, patientController
 router.route('/book-appointment').post(authController.protect, patientController.bookAppointment);
 
 router.route('/view-prescription/:id').get(authController.protect, patientController.viewPrescription);
+router.route('/view-doctors-list').get(authController.protect, patientController.viewDoctorsList);
 
 module.exports = router;

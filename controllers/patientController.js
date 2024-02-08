@@ -1,5 +1,6 @@
 const Patient = require('../models/patient')
 const Prescription = require('../models/prescription');
+const Registration = require('../models/registration');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Appointment = require('../models/appointment');
@@ -43,6 +44,21 @@ exports.viewPrescription = catchAsync(async (req, res, next) => {
         status: "success",
         data: {
             presciption
+        }
+    })
+    })
+
+exports.viewDoctorsList = catchAsync(async (req, res, next) => {
+    const doctors = await Registration.find({ role: "doctor" });
+
+    // if (!doctors) {
+    //     return next(new AppError('Doctor list is empty'));
+    // }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            doctors,
         }
     })
     })
