@@ -10,5 +10,7 @@ router.route('/book-appointment').post(authController.protect, patientController
 
 router.route('/view-prescription/:id').get(authController.protect, patientController.viewPrescription);
 router.route('/view-doctors-list').get(authController.protect, patientController.viewDoctorsList);
+router.route('/view-results-reports/:id').get(authController.protect, patientController.viewReportsAndReport);
+
 
 module.exports = router;
