@@ -10,6 +10,8 @@ router.route('/view-appointment-list').get(authController.protect, receptionistC
 router.route('/view-nurses-schedule').get(authController.protect, receptionistController.viewNursesSchedule);
 
 router.route('/book-appointment').post(authController.protect, patientController.bookAppointment);
+router.route('/register-patient').post(authController.protect, patientController.registerPatient);
+
 
 
 module.exports = router;

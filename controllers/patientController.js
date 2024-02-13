@@ -1,4 +1,3 @@
-const Patient = require('../models/patient')
 const Prescription = require('../models/prescription');
 const Registration = require('../models/registration');
 const ResultsAndReports = require('../models/reportAndResults');
@@ -15,18 +14,7 @@ const filterObj = (obj, ...allowedFields) => {
     return newObj
 }
 
-exports.registerPatient = catchAsync(async (req, res, next) => { 
-    const newPatient = await Patient.create(req.body)   
 
-    res.status(201).json({
-        status: "success",
-        message: "Patient registered succesfully",
-        results: newPatient.length,
-        data: {
-            newPatient,
-        }
-    })
-})
 
 exports.bookAppointment = catchAsync(async (req, res, next) => {
     // Book an appoiment
