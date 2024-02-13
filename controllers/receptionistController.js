@@ -88,10 +88,13 @@ exports.updatePatient = catchAsync(async (req, res) => {
 
 
 exports.manageProfile = catchAsync(async (req, res, next) => {
-    const receptionist = await Registration.findOneAndUpdate(
-        { role: "receptionist" },
-        { $set: req.body },
-        { new: true }
+    const receptionist = await Registration.findOneAndUpdate({ role: "receptionist" },
+        { $set: { firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        username: req.body.username,
+        phoneNumber: req.body.phoneNumber, },  
+        },
+        { new: true },
     );
 
     if (!receptionist) {
