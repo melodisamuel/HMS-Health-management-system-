@@ -10,7 +10,9 @@ router.route('/view-appointment-list').get(authController.protect, receptionistC
 router.route('/view-nurses-schedule').get(authController.protect, receptionistController.viewNursesSchedule);
 
 router.route('/book-appointment').post(authController.protect, patientController.bookAppointment);
-router.route('/register-patient').post(authController.protect, patientController.registerPatient);
+router.route('/register-patient').post(authController.protect, receptionistController.registerPatient);
+
+router.route('/update-patient/:userId').patch(authController.protect, receptionistController.updatePatient);
 
 
 

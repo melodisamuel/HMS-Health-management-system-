@@ -1,7 +1,8 @@
 const Appointment = require('../models/appointment');
 const catchAsync = require('../utils/catchAsync');
 const Registration = require('../models/registration');
-const Patient = require('../models/patient')
+const Patient = require('../models/patient');
+const AppError = require('../utils/appError');
 
 
 exports.viewAppointmentList = catchAsync(async (req, res, next) => {
@@ -41,8 +42,8 @@ exports.bookAppointment = catchAsync(async (req, res, next) => {
     })
 });
 
-exports.registerPatient = catchAsync(async (req, res, next) => { 
-    const newPatient = await Patient.create(req.body)   
+exports.registerPatient = catchAsync(async (req, res, next) => {
+    const newPatient = await Patient.create(req.body)
 
     res.status(201).json({
         status: "success",
@@ -52,5 +53,44 @@ exports.registerPatient = catchAsync(async (req, res, next) => {
             newPatient,
         }
     })
-})
-    
+});
+
+exports.updatePatient = async (req, res) => {
+    const { user, medicalHistory, appointments, prescriptions, reports, feedback } = req.body;
+
+    try {
+        const updatedPatient = await Patient.findOneAndUpdate(
+            { user: req.params.userId }, // Assuming userId is passed in the request parameters
+            {
+                user,
+                medicalHistory,
+                appointments,
+                prescriptions,
+                reports,
+                feedback
+            },
+            { new: true }
+        );
+
+        if (!updatedPatient) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Patient not found',
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Patient updated successfully',
+            data: {
+                patient: updatedPatient,
+            },
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            status: 'error',
+            message: 'Internal server error',
+        });
+    }
+};
