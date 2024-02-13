@@ -55,10 +55,10 @@ exports.registerPatient = catchAsync(async (req, res, next) => {
     })
 });
 
-exports.updatePatient = async (req, res) => {
+exports.updatePatient = catchAsync(async (req, res) => {
     const { user, medicalHistory, appointments, prescriptions, reports, feedback } = req.body;
 
-    try {
+    
         const updatedPatient = await Patient.findOneAndUpdate(
             { user: req.params.userId }, // Assuming userId is passed in the request parameters
             {
@@ -73,10 +73,7 @@ exports.updatePatient = async (req, res) => {
         );
 
         if (!updatedPatient) {
-            return res.status(404).json({
-                status: 'fail',
-                message: 'Patient not found',
-            });
+            return next(new AppError("Patient not found", 404));
         }
 
         res.status(200).json({
@@ -86,11 +83,25 @@ exports.updatePatient = async (req, res) => {
                 patient: updatedPatient,
             },
         });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            status: 'error',
-            message: 'Internal server error',
-        });
+  
+});
+
+
+exports.manageProfile = catchAsync(async (req, res, next) => {
+    const receptionist = await Registration.findOneAndUpdate(
+        { role: "receptionist" },
+        { $set: req.body },
+        { new: true }
+    );
+
+    if (!receptionist) {
+        return next(new AppError("Receptionist not found!", 500))
     }
-};
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            receptionist
+        }
+    })
+})
