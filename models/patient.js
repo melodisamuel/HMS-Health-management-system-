@@ -7,70 +7,32 @@ const patientSchema = new mongoose.Schema({
         required: [true, 'Patient must have a user'],
         unique: true,
     },
-    personalInfo: {
-        firstName: {
-            type: String,
-            required: [true, 'Firstname is required'],
-        },
-        dateOfBirth: {
-            type: Date,
-        },
-        address: {
-            type: String,
-        },
-        PhoneNumber: {
-            type: String,
-            unique: true,
-        },
-    },
     medicalHistory: {
-        allergies: [{
-            type: String,
-        }],
-        medications: [{
+        medications: {
             name: String,
             dosage: String,
             frequency: String,
-        }],
+        },
+        allergies: String,
     },
-    appointments: [{
+    appointments: {
         doctor: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
-        date: {
-            type: Date,
-        },
-        department: {
-            type: String,
-        },
-    }],
-    presciptions: [{
+        date: Date,
+        department: String,
+    },
+    prescriptions: {
         doctor: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
-        details: {
-            type: String,
-        },
-        date: {
-            type: Date,
-        },
-    }],
-    reports: [{
-        type: String,
-    }],
-    payementHistroy: [{
-        date: {
-            type: Date,
-        },
-        amount: {
-            type: Number,
-        },
-    }],
-    feedback: {
-        type: String,
+        details: String,
+        date: Date,
     },
+    reports: String,
+    feedback: String,
 });
 
 const Patient = mongoose.model('Patient', patientSchema);

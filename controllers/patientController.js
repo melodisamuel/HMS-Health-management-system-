@@ -2,12 +2,21 @@ const Patient = require('../models/patient')
 const Prescription = require('../models/prescription');
 const Registration = require('../models/registration');
 const ResultsAndReports = require('../models/reportAndResults');
+const User = require('../models/user')
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Appointment = require('../models/appointment');
 
-exports.registerPatient = catchAsync(async (req, res, next) => {
-    const newPatient = await Patient.create(req.body) 
+const filterObj = (obj, ...allowedFields) => {
+    const newObj = {};
+    Object.keys(obj).forEach(el => {
+        if (allowedFields.includes(el)) newObj[el] = obj[el];
+    })
+    return newObj
+}
+
+exports.registerPatient = catchAsync(async (req, res, next) => { 
+    const newPatient = await Patient.create(req.body)   
 
     res.status(201).json({
         status: "success",
@@ -64,7 +73,7 @@ exports.viewDoctorsList = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.viewReportsAndReport = catchAsync(async (req, res, next) => {
+exports.viewReportsAndResults = catchAsync(async (req, res, next) => {
     const resultsAndReports = await ResultsAndReports.findById(req.params.id)
 
     if (!ResultsAndReports) {
@@ -79,4 +88,25 @@ exports.viewReportsAndReport = catchAsync(async (req, res, next) => {
     })
     
 })
+
+
+
+exports.manageProfile = catchAsync(async (req, res, next) => {
+    // Create an error if user posts password data
+    // if (req.body.password || req.body.passwordConfirm) {
+    //     return next (new AppError('This route is not for password updates. Please use /updateMyPassword.', 400))
+    // }
+    // Filtered out unwanted filled names 
+    const filteredBody = filterObj(req.body, 'fullName', 'username', 'gender', 'phoneNumber', 'dateOfBirth');
+
+    // Update user document
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, { new: true, runValidators: true})
+    res.status(200).json({
+        status: "success",
+        data: {
+            user: updatedUser
+        }
+    })
+})
+
     
