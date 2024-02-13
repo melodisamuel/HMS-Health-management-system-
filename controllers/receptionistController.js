@@ -23,3 +23,18 @@ exports.viewNursesSchedule = catchAsync(async (req, res, next) => {
         }
     })
 })
+
+exports.bookAppointment = catchAsync(async (req, res, next) => {
+    // Book an appoiment
+    const newAppointment = await Appointment.create(req.body)
+    
+        res.status(201).json({
+            status: 'success',
+            message: 'Appointment booked succesfully',
+            results: newAppointment.length,
+            data: {
+                newAppointment
+            }
+            
+        })
+    })
