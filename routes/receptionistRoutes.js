@@ -11,6 +11,7 @@ router.route('/view-nurses-schedule').get(authController.protect, receptionistCo
 
 router.route('/book-appointment').post(authController.protect, patientController.bookAppointment);
 router.route('/register-patient').post(authController.protect, receptionistController.registerPatient);
+router.route('/issue-clinic-number').post(authController.protect, receptionistController.issueClinicNumber);
 
 router.route('/update-patient/:userId').patch(authController.protect, receptionistController.updatePatient);
 router.route('/manage-profile/').patch(authController.protect, receptionistController.manageProfile);

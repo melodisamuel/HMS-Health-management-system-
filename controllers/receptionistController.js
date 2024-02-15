@@ -2,6 +2,7 @@ const Appointment = require('../models/appointment');
 const catchAsync = require('../utils/catchAsync');
 const Registration = require('../models/registration');
 const Patient = require('../models/patient');
+const ClinicNumber = require('../models/clinicNumber');
 const AppError = require('../utils/appError');
 
 
@@ -105,6 +106,32 @@ exports.manageProfile = catchAsync(async (req, res, next) => {
         status: "success",
         data: {
             receptionist
+        }
+    })
+})
+
+exports.issueClinicNumber = catchAsync(async (req, res, next) => {
+    const { PatientName, doctorId, visitType } = req.body;
+
+    // Generate new clinic number 
+    const newClinicNumber = new ClinicNumber({
+        PatientName,
+        doctor: doctorId,
+        visitType,
+    })
+
+    // Issue the clinic number 
+    const issuedClinicNumber = newClinicNumber.issueClinicNumber();
+
+    // Save the issue clinic number to database 
+    await newClinicNumber.save()
+
+    res.status(201).json({
+        status: "success",
+        message: "Clinic number issued successfully",
+        data: {
+            ClinicNumber: issuedClinicNumber,
+            clinicVisit: newClinicNumber,
         }
     })
 })
