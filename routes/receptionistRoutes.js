@@ -2,6 +2,7 @@ const express = require('express');
 const receptionistController = require('../controllers/receptionistController');
 const authController = require('../controllers/authController');
 const patientController = require('../controllers/patientController');
+const staffController = require('../controllers/staffController')
 
 
 const router = express.Router()
@@ -13,7 +14,7 @@ router.route('/book-appointment').post(authController.protect, patientController
 router.route('/register-patient').post(authController.protect, receptionistController.registerPatient);
 router.route('/issue-clinic-number').post(authController.protect, receptionistController.issueClinicNumber);
 
-router.route('/update-patient/:userId').patch(authController.protect, authController.restrictTo('admin', 'recptionist', 'doctor'), receptionistController.updatePatient);
+router.route('/update-patient/:userId').patch(staffController.protect, staffController.restrictTo('admin', 'recptionist', 'doctor'), receptionistController.updatePatient);
 router.route('/manage-profile/').patch(authController.protect, receptionistController.manageProfile);
 
 

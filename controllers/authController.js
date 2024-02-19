@@ -77,6 +77,8 @@ exports.login =  catchAsync(async (req, res, next) => {
 
 
 
+
+
 // filteredObj = (obj, ...allowedFields) => {
 //     const newObj = {};
 //     Object.keys(obj).forEach(el => {

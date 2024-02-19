@@ -28,3 +28,4 @@ exports.generateResultsAndReports = catchAsync(async (req, res, next) => {
         }
     })
 })
+
