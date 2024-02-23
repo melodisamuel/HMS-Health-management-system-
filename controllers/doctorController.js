@@ -29,3 +29,7 @@ exports.generateResultsAndReports = catchAsync(async (req, res, next) => {
     })
 })
 
+exports.diagnosePatient = catchAsync(async (req, res, next) => {
+    const diagnosis = 
+})
+
