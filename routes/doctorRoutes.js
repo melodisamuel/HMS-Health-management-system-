@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.route('/enter-prescription').post(authController.protect, doctorController.enterPresciption);
 router.route('/generate-reports-results').post(authController.protect, doctorController.generateResultsAndReports);
+router.route('/diagnose-patient').post(authController.protect, doctorController.diagnosePatient);
 
 module.exports = router;
