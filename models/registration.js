@@ -68,8 +68,8 @@ const registrationSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: [ "admin", "patient", "receptionist", "doctor", "nurse", "pharmacist"],
-        // default: '',
+        enum: ["admin", "patient", "receptionist", "doctor", "nurse", "pharmacist"],
+        default: 'admin',
         required: [true, 'Role is required to register new staff']
     },
     passwordChangedAt: Date,
@@ -114,7 +114,7 @@ registrationSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     if (this.passwordChangedAt) {
       const changedTimestamp = parseInt(
         this.passwordChangedAt.getTime() / 1000,
-        10
+        10  
       );
   
       return JWTTimestamp < changedTimestamp;

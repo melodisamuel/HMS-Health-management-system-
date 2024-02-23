@@ -5,6 +5,5 @@ const adminController = require('../controllers/adminController')
 
 const router = express.Router()
 
-router.route('/').post(authController.protect, authController.restrictTo('admin'), adminController.register);
 
 module.exports = router;

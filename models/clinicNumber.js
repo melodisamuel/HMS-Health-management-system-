@@ -35,7 +35,7 @@ ClinicNumberSchema.methods.issueClinicNumber = function () {
 
     this.clinicNumber = crypto
         .createHash('sha256')
-        .update(clinicNumber)
+        .update(clinicNumber)                     
         .digest("hex");
     
     return clinicNumber;

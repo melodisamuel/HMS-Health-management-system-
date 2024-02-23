@@ -1,7 +1,8 @@
 const crypto = require('crypto');
-const { promisify } = require('util')
-const jwt = require('jsonwebtoken')
+const { promisify } = require('util');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Registration = require('../models/registration');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
@@ -54,26 +55,49 @@ exports.signUp = catchAsync(async (req, res, next) => {
     })
     createSendToken(newUser, 201, res);
 });
- 
-exports.login =  catchAsync(async (req, res, next) => {
-    const { email, password } = req.body;
-    
-    // Check if email and password exists
-    if (!email || !password) {
-        return next(new AppError('Please provide email and password!', 400))
-    }
 
-    // Check if user exists && password is correct
-    const user = await User.findOne({ email }).select('+password');
+exports.registerStaff = catchAsync(async (req, res, next) => {
+  // const filteredBody = filteredObj(req.body, fullName, username, email, gender, phoneNumber, dateOfBirth, password, passwordConfirm)
+  const newStaff = await Registration.create(req.body);
+  // if (!patient) {
+  //     return next(new AppError("No patient found with that ID", 404))
+  // }
+  createSendToken(newStaff, 201, res);
 
-
-    if (!user || !await user.correctPassword(password, user.password)) {
-        return next(new AppError('Incorrect email or password!', 401))
-    }
- 
- // 3. if everything ok send token to client
- createSendToken(user, 200, res);
 });
+ 
+exports.login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+  
+  // Check if email and password exist
+  if (!email || !password) {
+      return next(new AppError('Please provide email and password!', 400));
+  }
+
+  // Check if user exists in the User schema and password is correct
+  const user = await User.findOne({ email }).select('+password');
+
+  if (user && (await user.correctPassword(password, user.password))) {
+      // If user found in the User schema
+      // Send token to client
+      createSendToken(user, 200, res);
+      return;
+  }
+
+  // Check if user exists in the Registration schema and password is correct
+  const registration = await Registration.findOne({ email }).select('+password');
+
+  if (registration && (await registration.correctPassword(password, registration.password))) {
+      // If user found in the Registration schema
+      // Send token to client
+      createSendToken(registration, 200, res);
+      return;
+  }
+
+  // If user not found in either schema or password is incorrect
+  return next(new AppError('Incorrect email or password!', 401));
+});
+
 
 
 
@@ -103,30 +127,41 @@ exports.protect = catchAsync(async (req, res, next) => {
     // Verify token 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
 
-    // Check if user still exists
-    const freshUser = await User.findById(decoded.id)
-    if (!freshUser) {
-        next(new AppError('The user belonging to the token  longer exists.', 401))
-    }
-
+  // Check if user still exists
+  let freshUser
+  freshUser = await User.findById(decoded.id);
+  if (!freshUser) {
+    //Check in the other model
+    freshUser = await Registration.findById(decoded.id);
+  } else {
+    next(new AppError('The user belonging to the token no longer exists.', 401))
+  }
     // Check if user chnaged password after the token was issued 
     if (freshUser.changedPasswordAfter(decoded.iat)) {
         return next(new AppError('User recently changed passsword! Please login again.', 401))
     }
     // Allow access to protected route
-    req.user = freshUser;
+  req.user = freshUser;
+  
     next()
 });
 
 exports.restrictTo = (...roles) => {
-    return (req, res, next) => {
-        // roles ['admin']
-        if (!roles.includes(req.user.role)) {
-            return next(new AppError('You do not have permission to perform this action', 403))
-        }
-        next();
-    }
-}
+  return (req, res, next) => {
+      // Check if the user's role matches any of the roles provided
+      const userRoles = roles.map(role => req.user.role);
+      
+      // Check if any of the user's roles match the allowed roles
+      const allowed = userRoles.some(userRole => roles.includes(userRole));
+      
+      if (!allowed) {
+          return next(new AppError('You do not have permission to perform this action', 403));
+      }
+      
+      next();
+  };
+};
+
 
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
