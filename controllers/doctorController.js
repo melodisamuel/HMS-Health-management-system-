@@ -1,6 +1,7 @@
 const Prescription = require('../models/prescription');
 const ResultsAndReports = require('../models/reportAndResults');
 const Registration = require('../models/registration');
+const ExaminationRecommendation = require('../models/examination');
 const Diagnosis = require('../models/diagnosis');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -83,6 +84,18 @@ exports.viewLabAssistantSchedule = catchAsync(async (req, res, next) => {
         status: 'success',
         data: {
             labAssistant
+        }
+    })
+})
+
+exports.recommendExamination = catchAsync(async (req, res, next) => {
+    const examination = await ExaminationRecommendation.create(req.body);
+
+    res.status(201).json({
+        status: 'success',
+        results: examination.length,
+        data: {
+            examination
         }
     })
 })
