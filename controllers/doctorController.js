@@ -70,4 +70,19 @@ exports.viewNursesSchedule = catchAsync(async (req, res, next) => {
             nurse
         }
     })
+});
+
+exports.viewLabAssistantSchedule = catchAsync(async (req, res, next) => {
+    const labAssistant = await Registration.findOne({ role: 'lab assistant', _id: req.params.id }, { schedule: 1, _id: 0 });
+
+    if (!labAssistant) {
+        return next(new AppError('No labAssistant found with that id', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            labAssistant
+        }
+    })
 })
