@@ -127,15 +127,18 @@ exports.protect = catchAsync(async (req, res, next) => {
     // Verify token 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
 
-  // Check if user still exists
-  let freshUser
-  freshUser = await User.findById(decoded.id);
+  // Check if user still exists in User model
+  let freshUser = await User.findById(decoded.id);
+
+  // if user not found in user model, check Registration model
   if (!freshUser) {
-    //Check in the other model
     freshUser = await Registration.findById(decoded.id);
-  } else {
-    next(new AppError('The user belonging to the token no longer exists.', 401))
-  }
+  } 
+
+  // If user still not found, throw error
+  if (!freshUser) {
+     return next(new AppError('The user belonging to the token no longer exists.', 401))
+   }
     // Check if user chnaged password after the token was issued 
     if (freshUser.changedPasswordAfter(decoded.iat)) {
         return next(new AppError('User recently changed passsword! Please login again.', 401))

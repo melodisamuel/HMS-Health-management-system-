@@ -15,7 +15,7 @@ const diagnosisSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },      
-    symptoms: [String], // List of symptoms reported by the patient
+    symptoms: [String],// List of symptoms reported by the patient
     diagnosis: {
         type: String,
         required: true

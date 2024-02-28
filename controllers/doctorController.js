@@ -41,3 +41,17 @@ exports.diagnosePatient = catchAsync(async (req, res, next) => {
     })
 })
 
+exports.viewSchedule = catchAsync(async (req, res, next) => {
+    const doctor = await Registration.findOne({ role: 'doctor', _id: req.params.id }).populate('schedule');
+
+    if (!doctor) {
+        return next(new AppError('No doctor found with that id', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            doctor
+        }
+    })
+})

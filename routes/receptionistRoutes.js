@@ -6,7 +6,6 @@ const patientController = require('../controllers/patientController');
 
 const router = express.Router()
 
-router.route('/register').post(authController.registerStaff);
 
 
 router.route('/view-appointment-list').get(authController.protect, receptionistController.viewAppointmentList);
