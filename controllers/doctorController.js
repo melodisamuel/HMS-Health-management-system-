@@ -1,5 +1,6 @@
 const Prescription = require('../models/prescription');
-const ResultsAndReports = require('../models/reportAndResults')
+const ResultsAndReports = require('../models/reportAndResults');
+const Registration = require('../models/registration');
 const Diagnosis = require('../models/diagnosis');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -42,7 +43,7 @@ exports.diagnosePatient = catchAsync(async (req, res, next) => {
 })
 
 exports.viewSchedule = catchAsync(async (req, res, next) => {
-    const doctor = await Registration.findOne({ role: 'doctor', _id: req.params.id }).populate('schedule');
+    const doctor = await Registration.findOne({ role: 'doctor', _id: req.params.id },   { schedule: 1, _id: 0 });
 
     if (!doctor) {
         return next(new AppError('No doctor found with that id', 404));
@@ -52,6 +53,21 @@ exports.viewSchedule = catchAsync(async (req, res, next) => {
         status: 'success',
         data: {
             doctor
+        }
+    })
+})
+
+exports.viewNursesSchedule = catchAsync(async (req, res, next) => {
+    const nurse = await Registration.findOne({ role: 'nurse', _id: req.params.id }, { schedule: 1, id: 0 });
+
+    if (!nurse) {
+        return next(new AppError('No nurse found with that id', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            nurse
         }
     })
 })
