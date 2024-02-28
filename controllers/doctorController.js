@@ -2,6 +2,7 @@ const Prescription = require('../models/prescription');
 const ResultsAndReports = require('../models/reportAndResults');
 const Registration = require('../models/registration');
 const ExaminationRecommendation = require('../models/examination');
+const Examination = require('../models/examinationResults');
 const Diagnosis = require('../models/diagnosis');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -97,5 +98,25 @@ exports.recommendExamination = catchAsync(async (req, res, next) => {
         data: {
             examination
         }
+    })
+})
+
+exports.trackExaminationResult = catchAsync(async (req, res, next) => {
+    const { patientId, examinationId } = req.params;
+
+    // Query the Examination model to find the specific examination
+    const examination = await Examination.findOne({
+        _id: examinationId,
+        patient: patientId
+    });
+
+    if (!examination) {
+        return next(new AppError('Examination not found for this patient', 404));
+    }
+    res.status(200).json({
+        status: "success",
+        data: [
+            examination
+        ]
     })
 })
