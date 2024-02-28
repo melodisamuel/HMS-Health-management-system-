@@ -68,7 +68,7 @@ const registrationSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["admin", "patient", "receptionist", "doctor", "nurse", "pharmacist"],
+        enum: ["admin", "patient", "receptionist", "doctor", "nurse", "pharmacist", "Lab Assistant"],
         default: 'admin',
         required: [true, 'Role is required to register new staff']
     },
