@@ -16,6 +16,7 @@ const adminRouter = require('./routes/adminRoutes');
 const medicineRouter = require('./routes/medicineRoutes')
 const doctorRouter = require('./routes/doctorRoutes');
 const receptionistRouter = require('./routes/receptionistRoutes')
+const labAssistantRouter = require('./routes/labAssistantRoutes');
 // const staffRouter = require('./routes/staffRoutes');
 
 const app = express();
@@ -62,6 +63,8 @@ app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/medicine', medicineRouter);
 app.use('/api/v1/doctor', doctorRouter);
 app.use('/api/v1/receptionist', receptionistRouter);
+app.use('/api/v1/labAssistant', labAssistantRouter);
+
 // app.use('/api/v1/staff', staffRouter);
 
 

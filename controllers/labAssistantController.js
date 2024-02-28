@@ -1,9 +1,9 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const Examination = require('../models/examination');
+const Examination = require('../models/examinationResults');
 
 
-exports.examinationResult = catchAsync(async (req, res, next) => {
+exports.ProcessResult = catchAsync(async (req, res, next) => {
     const examination = await Examination.create(req.body);
 
     res.status(201).json({
