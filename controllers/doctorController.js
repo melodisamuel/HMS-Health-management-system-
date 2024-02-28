@@ -58,7 +58,7 @@ exports.viewSchedule = catchAsync(async (req, res, next) => {
 })
 
 exports.viewNursesSchedule = catchAsync(async (req, res, next) => {
-    const nurse = await Registration.findOne({ role: 'nurse', _id: req.params.id }, { schedule: 1, id: 0 });
+    const nurse = await Registration.findOne({ role: 'nurse', _id: req.params.id }, { schedule: 1, _id: 0 });
 
     if (!nurse) {
         return next(new AppError('No nurse found with that id', 404));
