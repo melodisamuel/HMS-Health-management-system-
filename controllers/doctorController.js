@@ -118,3 +118,15 @@ exports.trackExaminationResult = catchAsync(async (req, res, next) => {
         }
     })
 })
+
+exports.manageProfile = catchAsync(async (req, res, next) => {
+    const profile = await Registration.findOneAndUpdate({ role: 'doctor' })
+    
+    res.status(200).json({
+        status: "success",
+        message: "Profile updated succesfully",
+        data: {
+            profile,
+        }
+    })
+})
