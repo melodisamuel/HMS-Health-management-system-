@@ -11,10 +11,10 @@ const ExaminationRecommendationSchema = new mongoose.Schema({
         ref: 'Doctor', // Reference to the Doctor model
         required: true
     },
-    examinations: [{
+    examinations: {
         type: String, // You can adjust the type based on the nature of examinations
         required: true
-    }],
+    },
     recommendationDate: {
         type: Date,
         default: Date.now
