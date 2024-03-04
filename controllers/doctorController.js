@@ -106,7 +106,7 @@ exports.trackExaminationResult = catchAsync(async (req, res, next) => {
 
     const { patientId } = req.query;
 
-    const examination = await Examination.findOne({ patientId });
+    const examination = await Examination.find({ patientId });
 
     // Check if examinaitons was found
     if (!examination) {
@@ -123,13 +123,25 @@ exports.trackExaminationResult = catchAsync(async (req, res, next) => {
 })
 
 exports.manageProfile = catchAsync(async (req, res, next) => {
-    const profile = await Registration.findOneAndUpdate({ role: 'doctor' })
-    
+    const { id } = req.params; // Correctly extract the id from req.params
+
+    // Find and update the profile of the specific doctor using the id
+    const profile = await Registration.findOneAndUpdate({ _id: id, role: 'doctor' }, req.body, {
+        new: true, // Return the updated document
+        runValidators: true // Run validation checks on the update operation
+    });
+
+    // Check if the profile was found and updated
+    if (!profile) {
+        return next(new AppError('There is no doctor with that profile', 404));
+    }
+
+    // Send the updated profile in the response
     res.status(200).json({
         status: "success",
-        message: "Profile updated succesfully",
+        message: "Profile updated successfully",
         data: {
             profile,
         }
-    })
-})
+    });
+});
