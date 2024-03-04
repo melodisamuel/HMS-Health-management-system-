@@ -104,13 +104,16 @@ exports.recommendExamination = catchAsync(async (req, res, next) => {
 
 exports.trackExaminationResult = catchAsync(async (req, res, next) => {
 
-    const { examinationId } = req.params;
+    const { patientId } = req.query;
 
-    const examination = await Examination.findById(examinationId);
+    const examination = await Examination.findOne({ patientId });
 
+    // Check if examinaitons was found
     if (!examination) {
-        return next(new AppError('Examinaiton not found', 404));
+        return next(new AppError('Examinaiton not found for specified patient', 404));
     }
+
+    // If examinaitons are found, send them in the response
     res.status(200).json({
         status: "success",
         data: {
