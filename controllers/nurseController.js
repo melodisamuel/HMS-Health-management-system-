@@ -1,5 +1,6 @@
 const PreAssessment = require('../models/preAssessment');
 const NurseAssignment = require('../models/assignDoctor');
+const SpecimenCollection = require('../models/specimen');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -27,4 +28,18 @@ exports.assignDoctor = catchAsync(async (req, res, next) => {
             doctor
         }
     })
+});
+
+exports.collectSpecimen = catchAsync(async (req, res, next) => {
+    const specimen = await SpecimenCollection.create(req.body);
+
+    res.status(201).json({
+        status: 'success',
+        message: 'Specimen has been collected',
+        results: specimen.length,
+        data: {
+            specimen
+        }
+    })
 })
+
