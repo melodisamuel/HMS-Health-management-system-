@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const NurseAssignmentSchema = new mongoose.Schema({
     nurse: {
         type: mongoose.Schema.Types.ObjectId,
