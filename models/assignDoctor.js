@@ -22,3 +22,5 @@ const NurseAssignmentSchema = new mongoose.Schema({
 });
 
 const NurseAssignment = mongoose.model('NurseAssignment', NurseAssignmentSchema);
+
+module.exports = NurseAssignment;
