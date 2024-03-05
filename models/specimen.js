@@ -15,11 +15,11 @@ const SpecimenCollectionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    collectionDate: {
-        type: Date,
-        default: Date.now
+    quantity: {
+        type: String,
+        required: true
     },
-    notes: {
+    collectionRemarks: {
         type: String
     }
 });
