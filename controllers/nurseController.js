@@ -1,6 +1,7 @@
 const PreAssessment = require('../models/preAssessment');
 const NurseAssignment = require('../models/assignDoctor');
 const SpecimenCollection = require('../models/specimen');
+const Registration = require('../models/registration');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
