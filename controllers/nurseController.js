@@ -43,3 +43,28 @@ exports.collectSpecimen = catchAsync(async (req, res, next) => {
     })
 })
 
+
+exports.manageProfile = catchAsync(async (req, res, next) => {
+    const { id } = req.params; // Correctly extract the id from req.params
+
+    // Find and update the profile of the specific doctor using the id
+    const profile = await Registration.findOneAndUpdate({ _id: id, role: 'nurse' }, req.body, {
+        new: true, // Return the updated document
+        runValidators: true // Run validation checks on the update operation
+    });
+
+    // Check if the profile was found and updated
+    if (!profile) {
+        return next(new AppError('There is no nurse with that profile', 404));
+    }
+
+    // Send the updated profile in the response
+    res.status(200).json({
+        status: "success",
+        message: "Profile updated successfully",
+        data: {
+            profile,
+        }
+    });
+});
+
