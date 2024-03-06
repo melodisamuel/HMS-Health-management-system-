@@ -11,7 +11,7 @@ router.route('/view-nurses-schedule/:id').get(authController.protect, authContro
 router.route('/view-labAssistant-schedule/:id').get(authController.protect, authController.restrictTo('admin', 'doctor', 'lab assistant'), doctorController.viewLabAssistantSchedule);
 
 router.route('/enter-prescription').post(authController.protect, doctorController.enterPresciption);
-router.route('/generate-reports-results').post(authController.protect, doctorController.generateResultsAndReports);
+router.route('/generate-reports-results').post(authController.protect, authController.restrictTo("admin", "doctor", "lab assistant"), doctorController.generateResultsAndReports);
 router.route('/diagnose-patient').post(authController.protect, authController.restrictTo('admin', 'doctor'), doctorController.diagnosePatient);
 router.route('/recommend-examination').post(authController.protect, authController.restrictTo('admin', 'doctor'), doctorController.recommendExamination);
 
