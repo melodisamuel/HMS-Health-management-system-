@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.route('/process-examination').post(authController.protect, authController.restrictTo('admin', 'lab assistant'), labAssistantController.ProcessResult);
 router.route('/process-specimen').post(authController.protect, authController.restrictTo('admin', 'lab assistant'), labAssistantController.processSpecimen);
-router.route('/manage-profile').put(authController.protect, authController.restrictTo('admin', 'lab assistant'), labAssistantController.manageProfile);
+router.route('/manage-profile/:id').put(authController.protect, authController.restrictTo('admin', 'lab assistant'), labAssistantController.manageProfile);
 
 
 module.exports = router;
