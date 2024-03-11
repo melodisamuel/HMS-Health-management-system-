@@ -1,4 +1,5 @@
 const Prescription = require('../models/prescription');
+const MedicationDispense = require('../models/medication');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
@@ -22,3 +23,15 @@ exports.watchPatientPrescription = catchAsync(async (req, res, next) => {
     });
 
 });
+
+exports.DispenseMedication = catchAsync(async (req, res, next) => {
+    const medication = await MedicationDispense.create(req.body);
+
+    res.status(201).json({
+        status: "success",
+        message: 'Medication dispensed successfully',
+        data: {
+            medication
+        }
+    })
+})
