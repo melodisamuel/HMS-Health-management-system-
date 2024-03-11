@@ -6,7 +6,7 @@ exports.watchPatientPrescription = catchAsync(async (req, res, next) => {
 
     const { patientId } = req.query;
 
-    const patient = await Prescription.find({ patientId });
+    const patient = await Prescription.findOne({ patientId });
 
     // Check if examinaitons was found
     if (!patient) {

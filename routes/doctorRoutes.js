@@ -7,7 +7,7 @@ const router = express.Router();
 router.route('/view-schedule/:id').get(authController.protect, authController.restrictTo('admin', 'doctor', 'nurse'), doctorController.viewSchedule);
 router.route('/view-schedule').get(authController.protect, authController.restrictTo('admin', 'doctor', 'nurse'), doctorController.viewSchedule);
 router.route('/track-examination-result').get(authController.protect, authController.restrictTo('admin', 'doctor'), doctorController.trackExaminationResult);
-router.route('/view-nurses-schedule/:id').get(authController.protect, authController.restrictTo('admin', 'doctor', 'nurse'), doctorController.viewNursesSchedule);
+router.route('/view-nurses-schedule').get(authController.protect, authController.restrictTo('admin', 'doctor', 'nurse'), doctorController.viewNursesSchedule);
 router.route('/view-labAssistant-schedule/:id').get(authController.protect, authController.restrictTo('admin', 'doctor', 'lab assistant'), doctorController.viewLabAssistantSchedule);
 
 router.route('/enter-prescription').post(authController.protect, doctorController.enterPresciption);

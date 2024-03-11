@@ -4,4 +4,6 @@ const pharmacistController = require('../controllers/pharmacistController');
 
 const router = express.Router();
 
-router.route('/watch-patient-prescription/:id').get(authController.protect, authController.restrictTo('admin', 'pharmacist'), pharmacistController.watchPatientPrescription);
+router.route('/watch-patient-prescription').get(authController.protect, authController.restrictTo('admin', 'pharmacist'), pharmacistController.watchPatientPrescription);
+
+module.exports = router;
