@@ -8,4 +8,7 @@ router.route('/watch-patient-prescription').get(authController.protect, authCont
 
 router.route('/dispense-medication').post(authController.protect, authController.restrictTo('admin', 'pharmacist'), pharmacistController.DispenseMedication);
 
+router.route('/manage-profile').post(authController.protect, authController.restrictTo('admin', 'pharmacist'), pharmacistController.manageProfile);
+
+
 module.exports = router;
