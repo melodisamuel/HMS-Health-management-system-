@@ -109,7 +109,7 @@ exports.trackExaminationResult = catchAsync(async (req, res, next) => {
     const examinations = await Examination.find({ patientId });
 
     // Check if examinaitons was found
-    if (!examinations || examinations.length === 0 ) {
+    if (!examinations) {
         return next(new AppError('Examinaiton not found for specified patient', 404));
     }
 
